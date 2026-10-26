@@ -11,8 +11,14 @@
     try { return new URLSearchParams(window.location.search).get(nome) || ""; }
     catch (e) { return ""; }
   }
-  // Aceita ?d=104582-Ricardo (uma variável só, formato da Meta) ou ?p=104582&n=Ricardo
+  // Aceita /29616-Ricardo (caminho), ?d=29616-Ricardo ou ?p=29616&n=Ricardo
   var pedido = ler("p"), cliente = ler("n"), d = ler("d");
+  // Formato usado nos templates: atendimento.wallford.com.br/29616-Ricardo
+  if (!d) {
+    var caminho = "";
+    try { caminho = decodeURIComponent(window.location.pathname.replace(/^\/+|\/+$/g, "")); } catch (e) {}
+    if (caminho && !/\.html?$/i.test(caminho)) d = caminho;
+  }
   if (d) {
     var i = d.indexOf("-");
     if (i > -1) { pedido = d.slice(0, i); cliente = d.slice(i + 1); }
